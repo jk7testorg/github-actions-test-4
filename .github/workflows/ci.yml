@@ -27,7 +27,7 @@ jobs:
   # ─────────────────────────────────────────────────────────
   ci:
     name: CI — Build & Test
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -63,16 +63,16 @@ jobs:
         run: |
           mvn test -B
 
-      # SonarQube — language-specific flags for java
-      #- name: SonarQube Analysis
-      #  uses: SonarSource/sonarqube-scan-action@master
-      #  env:
-      #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #    SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      #  with:
-      #    args: >
-      #      -Dsonar.projectKey=${{ env.APP_NAME }}
-      #      -Dsonar.java.binaries=target/classes -Dsonar.sources=src/main/java
+      #SonarQube — language-specific flags for java
+      - name: SonarQube Analysis
+       uses: SonarSource/sonarqube-scan-action@master
+       env:
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+       with:
+         args: >
+           -Dsonar.projectKey=${{ env.APP_NAME }}
+           -Dsonar.java.binaries=target/classes -Dsonar.sources=src/main/java
           
 
       - name: Upload WAR
